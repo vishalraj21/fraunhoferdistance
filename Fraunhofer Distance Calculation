@@ -1,0 +1,39 @@
+clc
+close all
+clear all
+
+size=1000;
+points=21;
+fraunhoferdistance=250;
+
+x=randi(size,[1,points]);
+y=randi(size,[1,points]);
+
+stationx=300;
+stationy=300;
+distance=sqrt((x-stationx).^2+(y-stationy).^2);
+
+near = distance<=fraunhoferdistance;
+far = distance>fraunhoferdistance;
+
+Gt=1;
+Gr=1;
+Pt=1;
+freq=900*10^6;
+c=3*10^8;
+lambda= c/freq;
+Pr_far = Pt*Gt*Gr*(lambda./(4*pi*distance(far))).^2;
+Pr_near = Pt*Gt*Gr*(lambda./(4*pi*distance(near))).^2;
+
+disp(distance);
+disp(Pr_far);
+disp(Pr_near);
+scatter(x(near),y(near),'filled','r');
+hold on;
+scatter(x(far),y(far),'filled','b');
+scatter(stationx,stationy,'filled','g');
+title('Near and Far Regions from the BaseStation');
+xlabel('Points in X');
+ylabel('Points in Y');
+legend('Near Points','Far Points','BaseStation');
+grid on;
